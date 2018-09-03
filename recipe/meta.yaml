@@ -1,8 +1,8 @@
 
 {% set name = "qscintilla2" %}
-{% set version = "2.9.3" %}
-{% set md5 = "3b1cdbce9ef6c28cd868bcc58219f96e" %}
-{% set md5_zip = "2b0da639a8ec3d4a37c69a5539d22569" %}
+{% set version = "2.10.4" %}
+{% set md5 = "48ef316ff1e2a4d45a65d42be146ca39" %}
+{% set md5_zip = "04b7716fb99e525a7186ad3b46b9d217" %}
 
 package:
   name: {{ name|lower }}
@@ -17,7 +17,7 @@ source:
   md5:  {{ md5_zip }}  # [win]
 
 build:
-  number: 2
+  number: 0
   features:
     - vc9  # [win and py27]
     - vc10  # [win and py34]
@@ -25,16 +25,20 @@ build:
 
 requirements:
   build:
-    - python     
-    - sip
-    - qt 5.6.*
-    - pyqt 5.6.*
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+
+  host:
+    - python
+    - sip >=4.19.4
+    - qt 5.9.*
+    - pyqt 5.9.*
 
   run:
     - python
-    - sip
-    - qt 5.6.*
-    - pyqt 5.6.*
+    - sip >=4.19.4
+    - qt 5.9.*
+    - pyqt 5.9.*
 
 about:
   home: https://www.riverbankcomputing.com/software/qscintilla/intro
@@ -49,3 +53,4 @@ about:
 extra:
   recipe-maintainers:
     - dschreij
+    - dakcarto
