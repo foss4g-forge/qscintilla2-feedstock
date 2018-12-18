@@ -1,20 +1,17 @@
 
-{% set version = "2.9.3" %}
+{% set version = "2.10.8" %}
+{% set sha256 = "46cd5b4e609ca5e13130ba8cc7028d44fd1dc5b037f97c492899006ed0c992eb" %}
 
 package:
   name: qscintilla2
   version: {{ version }}
 
 source:
-  url:  http://downloads.sourceforge.net/project/pyqt/QScintilla2/QScintilla-{{ version }}/QScintilla_gpl-{{ version }}.tar.gz
-  md5:  3b1cdbce9ef6c28cd868bcc58219f96e
-  patches:
-    # Fix issue with templates downstream
-    # https://www.riverbankcomputing.com/pipermail/qscintilla/2016-October/001167.html
-    - xcode-8.patch  # [osx]
+  url:  https://downloads.sourceforge.net/project/pyqt/QScintilla2/QScintilla-{{ version }}/QScintilla_gpl-{{ version }}.tar.gz
+  sha256: {{ sha256 }}
 
 build:
-  number: 1004
+  number: 0
 
 requirements:
   build:
@@ -29,12 +26,12 @@ requirements:
   host:
     - python
     - pip
-    - sip
+    - sip >=4.19
     - qt
     - pyqt
   run:
     - python
-    - sip
+    - sip >=4.19
     - qt
     - pyqt
 
