@@ -23,7 +23,7 @@ cd ${SRC_DIR}/Qt4Qt5
 # The normal g++ compiler on Mac causes an __Unwind_Resume error at linking phase
 ${BIN}/qmake qscintilla.pro -spec ${BUILD_SPEC}
 # Build Qscintilla
-make
+make -j$CPU_COUNT
 # and install it
 make install
 

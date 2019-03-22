@@ -8,9 +8,13 @@ package:
 source:
   url:  http://downloads.sourceforge.net/project/pyqt/QScintilla2/QScintilla-{{ version }}/QScintilla_gpl-{{ version }}.tar.gz
   md5:  3b1cdbce9ef6c28cd868bcc58219f96e
+  patches:
+    # Fix issue with templates downstream
+    # https://www.riverbankcomputing.com/pipermail/qscintilla/2016-October/001167.html
+    - xcode-8.patch  # [osx]
 
 build:
-  number: 1003
+  number: 1004
 
 requirements:
   build:
