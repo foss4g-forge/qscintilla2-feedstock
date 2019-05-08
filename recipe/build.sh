@@ -17,6 +17,13 @@ if [ `uname` == Darwin ]; then
 	BUILD_SPEC=macx-clang
 else
 	BUILD_SPEC=linux-g++
+	# g++ cannot be found afterwards, solution taken from pyqt-feedstock
+	mkdir bin || true
+	pushd bin
+		ln -s ${GXX} g++ || true
+		ln -s ${GCC} gcc || true
+	popd
+	export PATH=${PWD}/bin:${PATH}
 fi
 
 echo "==========================="
@@ -24,14 +31,13 @@ echo "Building Qscintilla 2"
 echo "Using build spec: ${BUILD_SPEC}"
 echo "==========================="
 
-
 # Go to Qscintilla source dir and then to its Qt4Qt5 folder.
 cd ${SRC_DIR}/Qt4Qt5
 # Build the makefile with qmake
 qmake qscintilla.pro -spec ${BUILD_SPEC} -config release
 
 # Build Qscintilla
-make -j$CPU_COUNT
+make -j${CPU_COUNT} ${VERBOSE_AT}
 # and install it
 echo "Installing QScintilla"
 make install
