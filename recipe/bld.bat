@@ -49,6 +49,6 @@ if errorlevel 1 exit 1
 :: The qscintilla2.dll ends up in Anaconda's lib dir, where Python
 :: can't find it for import. Copy it to the bin dir
 :: (as indicated at http://pyqt.sourceforge.net/Docs/QScintilla2/)
-REM copy /y %LIBRARY_LIB%\qscintilla2_qt5.dll %LIBRARY_BIN%
+copy /y %LIBRARY_LIB%\qscintilla2_qt5.dll %LIBRARY_BIN%
 if errorlevel 1 exit 1
 @echo finished
