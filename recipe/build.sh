@@ -1,6 +1,8 @@
 #!/bin/bash
-BIN=$PREFIX/bin
-QT_MAJOR_VER=`${BIN}/qmake -v | sed -n 's/.*Qt version \([0-9])*\).*/\1/p'`
+set -e
+set -o pipefail
+CONDA_BIN=$PREFIX/bin
+QT_MAJOR_VER=`qmake -v | sed -n 's/.*Qt version \([0-9])*\).*/\1/p'`
 if [ -z "$QT_MAJOR_VER" ]; then
 	echo "Could not determine Qt version of string provided by qmake:"
 	echo `qmake -v`
@@ -12,34 +14,44 @@ fi
 
 # Set build specs depending on current platform (Mac OS X or Linux)
 if [ `uname` == Darwin ]; then
-	BUILD_SPEC=macx-llvm
+	BUILD_SPEC=macx-clang
 else
 	BUILD_SPEC=linux-g++
+	# g++ cannot be found afterwards, solution taken from pyqt-feedstock
+	mkdir bin || true
+	pushd bin
+		ln -s ${GXX} g++ || true
+		ln -s ${GCC} gcc || true
+	popd
+	export PATH=${PWD}/bin:${PATH}
 fi
+
+echo "==========================="
+echo "Building Qscintilla 2"
+echo "Using build spec: ${BUILD_SPEC}"
+echo "==========================="
 
 # Go to Qscintilla source dir and then to its Qt4Qt5 folder.
 cd ${SRC_DIR}/Qt4Qt5
-# Build the makefile with qmake, specify llvm as the compiler
-# The normal g++ compiler on Mac causes an __Unwind_Resume error at linking phase
-${BIN}/qmake qscintilla.pro -spec ${BUILD_SPEC}
+# Build the makefile with qmake
+qmake qscintilla.pro -spec ${BUILD_SPEC} -config release
+
 # Build Qscintilla
-make -j$CPU_COUNT
+make -j${CPU_COUNT} ${VERBOSE_AT}
 # and install it
+echo "Installing QScintilla"
 make install
 
 ## Build Python module ##
+echo "========================"
+echo "Building Python bindings"
+echo "========================"
 
 # Go to python folder
 cd ${SRC_DIR}/Python
 # Configure compilation of Python Qsci module
-${PYTHON} configure.py --pyqt=PyQt${QT_MAJOR_VER} --qmake=${BIN}/qmake --sip=${BIN}/sip --qsci-incdir=${PREFIX}/include/qt --qsci-libdir=${PREFIX}/lib --spec=${BUILD_SPEC} --no-qsci-api 
-# make it
+$PYTHON configure.py --pyqt=PyQt${QT_MAJOR_VER} --sip=${CONDA_BIN}/sip --qsci-incdir=${PREFIX}/include/qt --qsci-libdir=${PREFIX}/lib --spec=${BUILD_SPEC} --no-qsci-api
+# Build it
 make
-
-# On OSX: Change reference from libQsci.dylib to Qsci.so (otherwise anaconda linker crashes)
-if [ `uname` == Darwin ]; then
-	install_name_tool -id Qsci.so Qsci.so
-fi
-
-# Install QSci.so to the site-packages/PyQt4 folder
+# Install QSci.so to the site-packages folder
 make install

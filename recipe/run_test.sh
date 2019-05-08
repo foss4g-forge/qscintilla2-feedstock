@@ -8,8 +8,6 @@ if [ -z "$QT_MAJOR_VER" ]; then
 	echo `${BIN}/qmake -v`
 	echo "Aborting..."
 	exit 1
-else
-	echo "Building Qscintilla for Qt${QT_MAJOR_VER}"
 fi
 
 # Try to import Qsci from the retrieved Qt version

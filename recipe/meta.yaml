@@ -1,20 +1,19 @@
 
-{% set version = "2.9.3" %}
+{% set version = "2.10.8" %}
+{% set sha256 = "46cd5b4e609ca5e13130ba8cc7028d44fd1dc5b037f97c492899006ed0c992eb" %}
 
 package:
   name: qscintilla2
   version: {{ version }}
 
 source:
-  url:  http://downloads.sourceforge.net/project/pyqt/QScintilla2/QScintilla-{{ version }}/QScintilla_gpl-{{ version }}.tar.gz
-  md5:  3b1cdbce9ef6c28cd868bcc58219f96e
-  patches:
-    # Fix issue with templates downstream
-    # https://www.riverbankcomputing.com/pipermail/qscintilla/2016-October/001167.html
-    - xcode-8.patch  # [osx]
+  url:  https://downloads.sourceforge.net/project/pyqt/QScintilla2/QScintilla-{{ version }}/QScintilla_gpl-{{ version }}.tar.gz
+  sha256: {{ sha256 }}
 
 build:
-  number: 1004
+  number: 0
+  skip: true  # [win and py27]
+  skip: true  # [ppc64le]
 
 requirements:
   build:
@@ -29,22 +28,26 @@ requirements:
   host:
     - python
     - pip
-    - sip
+    - sip >=4.19
     - qt
     - pyqt
   run:
     - python
-    - sip
+    - sip >=4.19
     - qt
     - pyqt
 
 about:
   home: https://www.riverbankcomputing.com/software/qscintilla/intro
   license: GPL-3.0
+  license_family: GPL
+  license_file: LICENSE
   summary: "Qscintilla2 editor for Qt"
   description: |
-    QScintilla is a port to Qt of Neil Hodgson's Scintilla C++ editor control.
-    As well as features found in standard text editing components, QScintilla includes features especially useful when editing and debugging source code. These include support for syntax styling, error indicators, code completion and call tips. The selection margin can contain markers like those used in debuggers to indicate breakpoints and the current line. Styling choices are more open than with many editors, allowing the use of proportional fonts, bold and italics, multiple foreground and background colours and multiple fonts.
+    "QScintilla is a port to Qt of Neil Hodgson's Scintilla C++ editor control.
+    As well as features found in standard text editing components, QScintilla
+    includes features especially useful when editing and debugging source code.
+    These include support for syntax styling, error indicators, code completion and call tips."
   doc_url: http://pyqt.sourceforge.net/Docs/QScintilla2/annotated.html
   dev_url: https://www.riverbankcomputing.com/software/qscintilla/download
 
