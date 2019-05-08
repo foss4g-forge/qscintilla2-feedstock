@@ -12,6 +12,8 @@ source:
 
 build:
   number: 0
+  skip: true  # [win and py27]
+  skip: true  # [ppc64le]
 
 requirements:
   build:
@@ -38,10 +40,14 @@ requirements:
 about:
   home: https://www.riverbankcomputing.com/software/qscintilla/intro
   license: GPL-3.0
+  license_family: GPL
+  license_file: LICENSE
   summary: "Qscintilla2 editor for Qt"
   description: |
-    QScintilla is a port to Qt of Neil Hodgson's Scintilla C++ editor control.
-    As well as features found in standard text editing components, QScintilla includes features especially useful when editing and debugging source code. These include support for syntax styling, error indicators, code completion and call tips. The selection margin can contain markers like those used in debuggers to indicate breakpoints and the current line. Styling choices are more open than with many editors, allowing the use of proportional fonts, bold and italics, multiple foreground and background colours and multiple fonts.
+    "QScintilla is a port to Qt of Neil Hodgson's Scintilla C++ editor control.
+    As well as features found in standard text editing components, QScintilla
+    includes features especially useful when editing and debugging source code.
+    These include support for syntax styling, error indicators, code completion and call tips."
   doc_url: http://pyqt.sourceforge.net/Docs/QScintilla2/annotated.html
   dev_url: https://www.riverbankcomputing.com/software/qscintilla/download
 
